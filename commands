@@ -21,7 +21,17 @@ fi
 case "$1" in
 
   secure:unset)
-      if [[ -f "$HTPASSWD_FILE" ]]; then
+      if [[ -z $3 ]]; then
+        REMOVE="YES"
+      else
+        htpasswd -D $HTPASSWD_FILE $3
+
+        if [[ ! -s "$HTPASSWD_FILE" ]]; then
+          REMOVE="YES"
+        fi
+      fi
+
+      if [[ -f "$HTPASSWD_FILE" && ! -z "$REMOVE" ]]; then
         NGINX_CONF="$DOKKU_ROOT/$APP/nginx.conf"
         perl -0777 -i -pe 's/(\s|\n)*auth_basic \"Restricted\";\n\s*auth_basic_user_file $ARGV[0];//' $NGINX_CONF $HTPASSWD_FILE
         rm $HTPASSWD_FILE
