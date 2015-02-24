@@ -40,11 +40,13 @@ case "$1" in
         FIRST_RUN="YES"
       fi
 
-      htpasswd -bc $HTPASSWD_FILE $3 $4
-
       if [[ ! -z $FIRST_RUN ]]; then
+        htpasswd -bc $HTPASSWD_FILE $3 $4
+
         pluginhook nginx-pre-reload $APP
         sudo /etc/init.d/nginx reload
+      else
+        htpasswd -b $HTPASSWD_FILE $3 $4
       fi
     ;;
 
