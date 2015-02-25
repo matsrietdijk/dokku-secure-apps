@@ -62,8 +62,8 @@ case "$1" in
 
   help)
     cat && cat<<EOF
-    secure:unset <app>                              remove security for this app
-    secure:set <app> username password              secure this app with a userame and password
+    secure:unset <app> [username]                   remove an username auth for this app and remove security when no auths exist
+    secure:set <app> username password              secure this app with a username and password
 EOF
     ;;
 esac
